@@ -1,11 +1,6 @@
-Balloon Popper game using HTML5 Canvas, JavaScript and THREE.js
+## Balloon Popper
 
 This is a simple game I made using HTML5 Canvas, JavaScript and THREE.js. The goal is to pop the balloons before they fly out of sight. The game is not complete yet, but I will be adding more features to it in the future.
-
-current features:
-life counter
-score counter
-
 
 ## How to play
 Click start to start the game. Click on the balloons as they float up to pop them. The game ends when you miss 5 balloons.
@@ -27,10 +22,13 @@ Click start to start the game. Click on the balloons as they float up to pop the
 
 ## To do
 - [ ] Add a balloon pop sound
+- [ ] Add a balloon pop particle effect
 - [ ] Add a background music
 
 - [ ] Add a timer
 - [ ] Add a high score counter
 - [ ] Add a game over screen
 - [ ] Add a start screen
+- [ ] increase difficulty as time goes on
+- [ ] Add a pause button
 
