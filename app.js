@@ -1,7 +1,10 @@
 import * as THREE from '../../libs/three/three.module.js';
 import { GLTFLoader } from '../../libs/three/jsm/GLTFLoader.js';
 import { RGBELoader } from '../../libs/three/jsm/RGBELoader.js';
-import { LoadingBar } from '../../libs/LoadingBar.js';
+import { LoadingBar } from '../../libs/LoadingBar.js'; 
+import { SFX } from '../../libs/SFX.js';
+
+//sound handli
 
 
 class App {
@@ -12,7 +15,7 @@ class App {
         this.gameOver = true;
         this.score = 0;
         this.lives = 0;
-
+        
         //update the score
 
         scorePanel.innerHTML = "Score: " + this.score;
@@ -49,6 +52,8 @@ class App {
             this.loadGLTF(i);
         }
 
+        this.loadSFX();
+
         window.addEventListener('click', this.onClick.bind(this));
         window.addEventListener('resize', this.resize.bind(this));
         //event listener for the start button
@@ -56,6 +61,12 @@ class App {
         startButton.addEventListener('click', this.newGame.bind(this));
 
     }
+
+    loadSFX() {
+        this.sfx = new SFX(this.camera, this.assetsPath + 'sounds/');
+        this.sfx.loadSound('pop', false, 1);
+    }
+
     //hide all balloons
     hideAll() {
         for (let i = 0; i < this.scene.children.length; i++) {
@@ -107,6 +118,10 @@ class App {
 
     onClick(event) {
         if (!this.gameOver) {
+            //stop the sound
+            //if the sound is playing, stop it
+
+
             //get the mouse position
             const mouse = new THREE.Vector2();
             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -118,11 +133,14 @@ class App {
             const intersects = raycaster.intersectObjects(this.scene.children, true);
             //if there is an intersection, reset the balloon position
             if (intersects.length > 0) {
+                if (this.sfx.sounds.pop.isPlaying) {
+                    this.sfx.sounds.pop.stop();
+                }
+                this.sfx.play('pop');
                 this.resetBalloon(intersects[0].object.parent);
                 this.score += 1;
                 this.setScore(this.score);
-                //console log the position of the balloon
-          //      console.log(intersects[0].object.parent.position);
+  
             }
         }
         

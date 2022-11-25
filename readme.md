@@ -21,7 +21,7 @@ Click start to start the game. Click on the balloons as they float up to pop the
     -using THREE.js object3D
 
 ## To do
-- [ ] Add a balloon pop sound
+- [x] Add a balloon pop sound
 - [ ] Add a balloon pop particle effect
 - [ ] Add a background music
 
@@ -32,3 +32,8 @@ Click start to start the game. Click on the balloons as they float up to pop the
 - [ ] increase difficulty as time goes on
 - [ ] Add a pause button
 
+
+## Credits
+https://picturetosound.com/en/download/574
+Sound effects by https://picturetosound.com
+Youtube: https://www.youtube.com/c/picturetosound

@@ -38,74 +38,7 @@
     <meta name="msapplication-TileColor" content="#da532c" />
     <meta name="theme-color" content="#ffffff" />
     <!-- end favicon -->
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        background-image: url(../../assets/clouds.png);
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-attachment: fixed;
-      }
-      #lives {
-        height: 10%;
-        padding: 10px;
-        position: absolute;
-        right: 0;
-        font-size: 4rem;
-        font-family: Arial, Helvetica, sans-serif;
-        color: #fff;
-        border: 10px solid #fff;
-        border-radius: 0px 0px 0px 30px;
-      }
-      #score {
-        height: 10%;
-        padding: 10px;
-        position: absolute;
-
-        font-size: 4rem;
-        font-family: Arial, Helvetica, sans-serif;
-        color: #fff;
-        border: 10px solid #fff;
-        border-radius: 0px 0px 30px 0px;
-      }
-      #start {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 4rem;
-        font-family: Arial, Helvetica, sans-serif;
-        color: #fff;
-        border: 10px solid #fff;
-        border-radius: 30px;
-        padding: 10px;
-        background-color: rgba(0, 0, 0, 0.5);
-        visibility: visible;
-      }
-      #start:hover {
-        background-color: rgba(0, 0, 0, 0.7);
-        cursor: pointer;
-      } 
-      /* mobile view */
-        @media only screen and (max-width: 800px) {
-            #lives {
-            font-size: 2rem;
-            border-radius: 0px 0px 0px 30px;
-            }
-            #score {
-            font-size: 2rem;
-            border-radius: 0px 0px 30px 0px;
-            }
-            }
-            #start {
-            font-size: 2rem;
-            border-radius: 30px;
-            }
-        }
-        
-    </style>
+    <link rel="stylesheet" href="../css/style.css" />
   </head>
   <body>
     <div id="score">Score</div><div id="lives">Lives: 0</div><div id="start">Start</div>
