@@ -11,14 +11,13 @@ class App {
     //color array for the balloons
     colors = [0xcc0000, 0x00cc00, 0x0000cc, 0xcccc00, 0xcc00cc, 0x0080cc, 0x000000, 0xffffff];
     constructor() {
-        const scorePanel = document.getElementById("score");
         this.gameOver = true;
         this.score = 0;
         this.lives = 0;
-        //update the score
-        scorePanel.innerHTML = "Score: " + this.score;
+        
         const container = document.createElement('div');
         document.body.appendChild(container);
+
         this.camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, .1, 500);
         this.camera.position.set(0, 4, 25);
         this.camera.lookAt(0, 4, 0);
