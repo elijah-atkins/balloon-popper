@@ -24,8 +24,6 @@ Click start to start the game. Click on the balloons as they float up to pop the
 - [x] Add a balloon pop sound
 - [ ] Add a balloon pop particle effect
 - [ ] Add a background music
-
-- [ ] Add a timer
 - [ ] Add a high score counter
 - [ ] Add a game over screen
 - [ ] Add a start screen
@@ -34,6 +32,10 @@ Click start to start the game. Click on the balloons as they float up to pop the
 
 
 ## Credits
+sound fx by
 https://picturetosound.com/en/download/574
 Sound effects by https://picturetosound.com
 Youtube: https://www.youtube.com/c/picturetosound
+
+images generated with Stable Diffusion 
+https://github.com/AUTOMATIC1111/stable-diffusion-webui

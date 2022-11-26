@@ -180,7 +180,7 @@ class App {
         });
 
         const self = this;
-        const loader = new GLTFLoader().setPath('../../assets/');
+        const loader = new GLTFLoader().setPath('../../assets/models/');
         loader.load('balloon.glb', function (gltf) {
             self.balloon = gltf.scene;
 
