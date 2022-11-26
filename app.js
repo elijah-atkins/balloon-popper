@@ -1,38 +1,31 @@
 import * as THREE from '../../libs/three/three.module.js';
 import { GLTFLoader } from '../../libs/three/jsm/GLTFLoader.js';
 import { RGBELoader } from '../../libs/three/jsm/RGBELoader.js';
-import { LoadingBar } from '../../libs/LoadingBar.js'; 
+import { LoadingBar } from '../../libs/LoadingBar.js';
 import { SFX } from '../../libs/SFX.js';
 
 //sound handli
 
 
 class App {
-    //color array with 10 colors. Red, pink, light green, dark green, light blue, dark blue, yellow, orange, purple, magenta
-    colors = [0xff0000, 0xff707b, 0x30ee30, 0x006400, 0x66bbe6, 0x0000ff, 0xffff00, 0xffa500, 0x800080, 0xff00ff];
+    //color array for the balloons
+    colors = [0xcc0000, 0x00cc00, 0x0000cc, 0xcccc00, 0xcc00cc, 0x0080cc, 0x000000, 0xffffff];
     constructor() {
         const scorePanel = document.getElementById("score");
         this.gameOver = true;
         this.score = 0;
         this.lives = 0;
-        
         //update the score
-
         scorePanel.innerHTML = "Score: " + this.score;
         const container = document.createElement('div');
         document.body.appendChild(container);
-        this.camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 50);
-        this.camera.position.set(-10, 0, 20);
-        this.camera.lookAt(-6, 4, 0);
+        this.camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, .1, 500);
+        this.camera.position.set(0, 4, 25);
+        this.camera.lookAt(0, 4, 0);
         this.timer = new THREE.Clock();
         this.scene = new THREE.Scene();
-
-
-
         const ambient = new THREE.HemisphereLight(0xffffff, 0x666666, 0.3);
-
         this.scene.add(ambient);
-
         this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -118,10 +111,6 @@ class App {
 
     onClick(event) {
         if (!this.gameOver) {
-            //stop the sound
-            //if the sound is playing, stop it
-
-
             //get the mouse position
             const mouse = new THREE.Vector2();
             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -140,10 +129,10 @@ class App {
                 this.resetBalloon(intersects[0].object.parent);
                 this.score += 1;
                 this.setScore(this.score);
-  
+
             }
         }
-        
+
     }
 
 
@@ -199,8 +188,6 @@ class App {
             const index = self.scene.children.indexOf(self.balloon);
             self.balloon.position.set(Math.sin(index * 5) * 10 - 5, -Math.sin(index) * 10 - 15, Math.cos(index * 3) * 10 - 5);
             self.balloon.rotation.set(Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI);
-
-
         },
             function (xhr) {
                 self.loadingBar.progress = xhr.loaded / xhr.total;
@@ -216,7 +203,7 @@ class App {
         let frame = this.timer.getElapsedTime();
         const index = this.scene.children.indexOf(this.balloon);
         const color = this.colors[Math.floor(Math.random() * this.colors.length)];
-        balloon.position.set(Math.sin(index + frame * 5) * 10 - 5, -Math.sin(index + frame * 10) * 10 - 25, 0);
+        balloon.position.set(Math.sin(index + frame * 5) * 10 - 5, -Math.sin(index + frame * 10) * 10 - 25, Math.cos(index + frame) * 10 - 5);
         const s = Math.random() * 0.25 + 0.75;
         balloon.scale.set(s, s, s);
         //set the balloon color
@@ -231,78 +218,71 @@ class App {
         balloon.visible = true;
     }
 
-
     resize() {
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
-
     render() {
         //find every child of the scene and rotate it
         if (!this.gameOver) {
             this.scene.children.forEach((child) => {
-                child.position.y += 0.05;
-                child.rotation.y += Math.sin(child.position.y * 1) * 0.01;
-                child.rotation.z += .01;
-                if (child.position.y > 20) {
-                    //reset the balloon
+                if (child.name === "Scene") {
+                    child.position.y += 0.05;
+                    child.rotation.y += Math.sin(child.position.y * 1) * 0.01;
+                    child.rotation.z += .01;
+                    if (child.position.y > 20) {
 
-                    this.resetBalloon(child);
-                    //if the position.x in in view, subtract 1 from the score
-                    if (child.position.x > -3 && child.position.x < 3) {
-                        //if the balloon is visible, subtract 1 from the score
-                        if (child.visible) {
-                            this.lives -= 1;
-                            this.setLives(this.lives);
+                        //if the position.x in in view, subtract 1 from the score
+                        if (child.position.x > -6 && child.position.x < 6) {
+                            //if the balloon is visible, subtract 1 from the score
+                            if (child.visible) {
+                                this.lives -= 1;
+                                this.setLives(this.lives);
+                            }
                         }
+                        this.resetBalloon(child);
+                    }
+                    //check for collision
+                    if (this.checkCollision(child)) {
+                        //bump the balloon
+                        this.bumpBalloon(child);
                     }
                 }
-                //check for collision
-                if (this.checkCollision(child)) {
-                    //bump the balloon
-                    this.bumpBalloon(child);
-                }
-
             });
-
-
-            this.renderer.render(this.scene, this.camera);
-        }
+        
+        this.renderer.render(this.scene, this.camera);
     }
-    //check for collision
-
-    checkCollision(balloon) {
-        const index = this.scene.children.indexOf(balloon);
-        for (let i = 0; i < this.scene.children.length; i++) {
-            if (this.scene.children[i].visible) {
-                if (i != index) {
-                    if (this.scene.children[i].position.distanceTo(balloon.position) < 2) {
-                        //return true if there is a collision
-                        return true;
-                    }
+}
+checkCollision(balloon) {
+    const index = this.scene.children.indexOf(balloon);
+    for (let i = 0; i < this.scene.children.length; i++) {
+        if (this.scene.children[i].visible) {
+            if (i != index) {
+                if (this.scene.children[i].position.distanceTo(balloon.position) < 2) {
+                    //return true if there is a collision
+                    return true;
                 }
             }
         }
-        //return false if there is no collision
-        return false;
     }
+    //return false if there is no collision
+    return false;
+}
 
-    //check for collisions bump the balloon up at a random angle
-    bumpBalloon(balloon) {
-        //get a random angle
-        const angle = Math.random() * 2 * Math.PI;
-        //get a random distance
-        const distance = Math.random() * 2 + 1;
-        //move the balloon up
-        balloon.position.y += distance;
-        //move the balloon along the angle
-        balloon.position.x += Math.cos(angle) * distance;
-        balloon.position.z += Math.sin(angle) * distance;
-    }
-
-
+//check for collisions bump the balloon up at a random angle
+bumpBalloon(balloon) {
+    //get a random angle
+    const angle = Math.random() * 2 * Math.PI;
+    //get a random distance
+    const distance = Math.random() * 2 + 1;
+    //move the balloon up
+    balloon.position.y += distance;
+    //move the balloon along the angle
+    balloon.position.x += Math.cos(angle) * distance;
+    balloon.position.z += Math.sin(angle) * distance;
+}
 }
 
 export { App };
