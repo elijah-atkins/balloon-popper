@@ -56,7 +56,7 @@ class App {
 
     loadSFX() {
         this.sfx = new SFX(this.camera, this.assetsPath + 'sounds/');
-        this.sfx.loadSound('pop', false, 1);
+        this.sfx.loadSound('Pop', false, 1);
     }
 
     //hide all balloons
