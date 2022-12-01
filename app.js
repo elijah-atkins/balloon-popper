@@ -56,7 +56,7 @@ class App {
 
     loadSFX() {
         this.sfx = new SFX(this.camera, this.assetsPath + 'sounds/');
-        this.sfx.loadSound('pop', false, 1);
+        this.sfx.loadSound('balloonPop', false, 1);
     }
 
     //hide all balloons
@@ -121,10 +121,10 @@ class App {
             const intersects = raycaster.intersectObjects(this.scene.children, true);
             //if there is an intersection, reset the balloon position
             if (intersects.length > 0) {
-                if (this.sfx.sounds.pop.isPlaying) {
-                    this.sfx.sounds.pop.stop();
+                if (this.sfx.sounds.balloonPop.isPlaying) {
+                    this.sfx.sounds.balloonPop.stop();
                 }
-                this.sfx.play('pop');
+                this.sfx.play('balloonPop');
                 this.resetBalloon(intersects[0].object.parent);
                 this.score += 1;
                 this.setScore(this.score);
